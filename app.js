@@ -10,6 +10,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 // Security Middleware Implement
 app.use(cookieParser());
@@ -35,6 +36,18 @@ app.use(limiter);
 // API Routes
 app.use("/api", router);
 
+//database connection
+
+const mongodbconnection = async () => {
+  try {
+    const connect = await mongoose.connect("mongodb://localhost:27017/E-shop");
+    console.log("database connected succesfully");
+  } catch (error) {
+    console.log(error.massage);
+  }
+};
+
+mongodbconnection();
 // Handle undefined routes
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });
